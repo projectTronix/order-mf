@@ -37,6 +37,11 @@ module.exports = (_, argv) => ({
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i, 
+        loader: 'file-loader',
+
+      }
     ],
   },
 

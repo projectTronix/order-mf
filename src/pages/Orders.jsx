@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Stack from 'react-bootstrap/Stack';
 const Orders = () => {
 
 const [orders, setOrders] = useState(null);
@@ -12,9 +16,9 @@ const [orders, setOrders] = useState(null);
         setOrders(response.data);
       } catch (error) {
         console.log(error);
-        // if (error.code == "ERR_NETWORK") {
-        //   navigate("/error", { replace: true });
-        // }
+        if (error.code == "ERR_NETWORK") {
+          navigate("/error", { replace: true });
+        }
       }
     };
 
@@ -31,25 +35,31 @@ const [orders, setOrders] = useState(null);
     );
   }
   return (
-    <div>
+    <Container className='m-5'>
+      <h1 className='display-3 mb-4'>Orders</h1>
+      <Row className='order-list-header lead'>
+          <Col>Date & Time</Col>
+      </Row>
+      <Stack gap={3}>
       {orders && orders.map((item, index) => {
         const id = item.id;
         const order = orders[index] ? orders[index].items : null;
         return (
-            <div key={id}>
-                <h5>{item.userEmail}</h5>
-                {order && order.map((orderItem, subIndex) => {
-                    const subId = orderItem.id;
-                    return (
-                        <div className="orderItem" key={subId}>
-                            <h3>{orderItem.productId}</h3>
-                        </div>
+          <Row className='text-muted' key={id}>
+            <Col>{item.timeStamp}</Col>
+              {order && order.map((orderItem, subIndex) => {
+                const subId = orderItem.id;
+                return (
+                        <Col className="orderItem" key={subId}>
+                          <Row>{orderItem.productId}</Row>
+                        </Col>
                     );
                 })}
-            </div>
+          </Row>
         );
-      } )} 
-    </div>
+      } )}
+      </Stack>
+    </Container>
   )
 }
 
